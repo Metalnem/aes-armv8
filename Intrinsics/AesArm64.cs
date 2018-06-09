@@ -36,39 +36,60 @@ namespace Intrinsics
 
 		public void Encrypt(byte[] input, byte[] output)
 		{
-			var block = Unsafe.ReadUnaligned<Vector128<byte>>(ref input[0]);
+			int position = 0;
+			int left = input.Length;
 
-			block = Aes.Encrypt(block, Unsafe.ReadUnaligned<Vector128<byte>>(ref key[0]));
-			block = Aes.MixColumns(block);
+			var key = Unsafe.ReadUnaligned<Vector128<byte>>(ref this.key[0]);
+			var subkey0 = Unsafe.ReadUnaligned<Vector128<byte>>(ref subkeys[0 * BlockSize]);
+			var subkey1 = Unsafe.ReadUnaligned<Vector128<byte>>(ref subkeys[1 * BlockSize]);
+			var subkey2 = Unsafe.ReadUnaligned<Vector128<byte>>(ref subkeys[2 * BlockSize]);
+			var subkey3 = Unsafe.ReadUnaligned<Vector128<byte>>(ref subkeys[3 * BlockSize]);
+			var subkey4 = Unsafe.ReadUnaligned<Vector128<byte>>(ref subkeys[4 * BlockSize]);
+			var subkey5 = Unsafe.ReadUnaligned<Vector128<byte>>(ref subkeys[5 * BlockSize]);
+			var subkey6 = Unsafe.ReadUnaligned<Vector128<byte>>(ref subkeys[6 * BlockSize]);
+			var subkey7 = Unsafe.ReadUnaligned<Vector128<byte>>(ref subkeys[7 * BlockSize]);
+			var subkey8 = Unsafe.ReadUnaligned<Vector128<byte>>(ref subkeys[8 * BlockSize]);
+			var subkey9 = Unsafe.ReadUnaligned<Vector128<byte>>(ref subkeys[9 * BlockSize]);
 
-			block = Aes.Encrypt(block, Unsafe.ReadUnaligned<Vector128<byte>>(ref subkeys[0 * BlockSize]));
-			block = Aes.MixColumns(block);
+			while (left >= BlockSize)
+			{
+				var block = Unsafe.ReadUnaligned<Vector128<byte>>(ref input[position]);
 
-			block = Aes.Encrypt(block, Unsafe.ReadUnaligned<Vector128<byte>>(ref subkeys[1 * BlockSize]));
-			block = Aes.MixColumns(block);
+				block = Aes.Encrypt(block, key);
+				block = Aes.MixColumns(block);
 
-			block = Aes.Encrypt(block, Unsafe.ReadUnaligned<Vector128<byte>>(ref subkeys[2 * BlockSize]));
-			block = Aes.MixColumns(block);
+				block = Aes.Encrypt(block, subkey0);
+				block = Aes.MixColumns(block);
 
-			block = Aes.Encrypt(block, Unsafe.ReadUnaligned<Vector128<byte>>(ref subkeys[3 * BlockSize]));
-			block = Aes.MixColumns(block);
+				block = Aes.Encrypt(block, subkey1);
+				block = Aes.MixColumns(block);
 
-			block = Aes.Encrypt(block, Unsafe.ReadUnaligned<Vector128<byte>>(ref subkeys[4 * BlockSize]));
-			block = Aes.MixColumns(block);
+				block = Aes.Encrypt(block, subkey2);
+				block = Aes.MixColumns(block);
 
-			block = Aes.Encrypt(block, Unsafe.ReadUnaligned<Vector128<byte>>(ref subkeys[5 * BlockSize]));
-			block = Aes.MixColumns(block);
+				block = Aes.Encrypt(block, subkey3);
+				block = Aes.MixColumns(block);
 
-			block = Aes.Encrypt(block, Unsafe.ReadUnaligned<Vector128<byte>>(ref subkeys[6 * BlockSize]));
-			block = Aes.MixColumns(block);
+				block = Aes.Encrypt(block, subkey4);
+				block = Aes.MixColumns(block);
 
-			block = Aes.Encrypt(block, Unsafe.ReadUnaligned<Vector128<byte>>(ref subkeys[7 * BlockSize]));
-			block = Aes.MixColumns(block);
+				block = Aes.Encrypt(block, subkey5);
+				block = Aes.MixColumns(block);
 
-			block = Aes.Encrypt(block, Unsafe.ReadUnaligned<Vector128<byte>>(ref subkeys[8 * BlockSize]));
-			block = Simd.Xor(block, Unsafe.ReadUnaligned<Vector128<byte>>(ref subkeys[9 * BlockSize]));
+				block = Aes.Encrypt(block, subkey6);
+				block = Aes.MixColumns(block);
 
-			Unsafe.WriteUnaligned(ref output[0], block);
+				block = Aes.Encrypt(block, subkey7);
+				block = Aes.MixColumns(block);
+
+				block = Aes.Encrypt(block, subkey8);
+				block = Simd.Xor(block, subkey9);
+
+				Unsafe.WriteUnaligned(ref output[position], block);
+
+				position += BlockSize;
+				left -= BlockSize;
+			}
 		}
 	}
 }

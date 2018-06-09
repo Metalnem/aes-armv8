@@ -1,4 +1,5 @@
 ﻿using System;
+using BenchmarkDotNet.Running;
 
 namespace Intrinsics
 {
@@ -6,7 +7,7 @@ namespace Intrinsics
 	{
 		public static void Main(string[] args)
 		{
-			Test();
+			var summary = BenchmarkRunner.Run<AesBenchmark>();
 		}
 
 		public static void Test()

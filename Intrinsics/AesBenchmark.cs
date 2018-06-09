@@ -6,7 +6,7 @@ using BenchmarkDotNet.Running;
 namespace Intrinsics
 {
 	[InProcess]
-	public class AesArm64Benchmark
+	public class AesBenchmark
 	{
 		private static readonly byte[] input1K = new byte[1024];
 		private static readonly byte[] output1K = new byte[input1K.Length];
