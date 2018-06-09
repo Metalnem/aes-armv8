@@ -12,6 +12,9 @@ namespace Intrinsics
 	[InProcess]
 	public class AesBenchmark
 	{
+		private static readonly byte[] input16B = new byte[16];
+		private static readonly byte[] output16B = new byte[input16B.Length];
+
 		private static readonly byte[] input1K = new byte[1024];
 		private static readonly byte[] output1K = new byte[input1K.Length];
 
@@ -35,6 +38,11 @@ namespace Intrinsics
 			bouncyFast = new BufferedBlockCipher(engine);
 			bouncyFast.Init(true, new KeyParameter(new byte[16]));
 		}
+
+		[Benchmark] public void OpenSsl16B() => openSsl.TransformBlock(input16B, 0, input16B.Length, output16B, 0);
+		[Benchmark] public void Intrinsics16B() => intrinsics.Encrypt(input16B, output16B);
+		[Benchmark] public void BouncyCastleSlow16B() => bouncySlow.ProcessBytes(input16B, 0, input16B.Length, output16B, 0);
+		[Benchmark] public void BouncyCastleFast16B() => bouncyFast.ProcessBytes(input16B, 0, input16B.Length, output16B, 0);
 
 		[Benchmark] public void OpenSsl1K() => openSsl.TransformBlock(input1K, 0, input1K.Length, output1K, 0);
 		[Benchmark] public void Intrinsics1K() => intrinsics.Encrypt(input1K, output1K);
