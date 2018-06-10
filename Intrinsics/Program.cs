@@ -17,9 +17,18 @@ namespace Intrinsics
 
 			var aes = new AesArm64();
 			aes.Encrypt(input, output);
+			aes.Decrypt(output, input);
 
 			// 3925841d02dc09fbdc118597196a0b32
-			Console.WriteLine(BitConverter.ToString(output).Replace("-", String.Empty).ToLower());
+			Console.WriteLine(ToHex(output));
+
+			// 3243f6a8885a308d313198a2e0370734
+			Console.WriteLine(ToHex(input));
+		}
+
+		private static string ToHex(byte[] bytes)
+		{
+			return BitConverter.ToString(bytes).Replace("-", String.Empty).ToLower();
 		}
 	}
 }
