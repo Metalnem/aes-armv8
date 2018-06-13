@@ -46,11 +46,13 @@ namespace Intrinsics
 
 		[Benchmark] public void OpenSsl1K() => openSsl.TransformBlock(input1K, 0, input1K.Length, output1K, 0);
 		[Benchmark] public void Intrinsics1K() => intrinsics.Encrypt(input1K, output1K);
+		[Benchmark] public void IntrinsicsPipelined1K() => intrinsics.EncryptPipelined(input1K, output1K);
 		[Benchmark] public void BouncyCastleSlow1K() => bouncySlow.ProcessBytes(input1K, 0, input1K.Length, output1K, 0);
 		[Benchmark] public void BouncyCastleFast1K() => bouncyFast.ProcessBytes(input1K, 0, input1K.Length, output1K, 0);
 
 		[Benchmark] public void OpenSsl1M() => openSsl.TransformBlock(input1M, 0, input1M.Length, output1M, 0);
 		[Benchmark] public void Intrinsics1M() => intrinsics.Encrypt(input1M, output1M);
+		[Benchmark] public void IntrinsicsPipelined1M() => intrinsics.EncryptPipelined(input1M, output1M);
 		[Benchmark] public void BouncyCastleSlow1M() => bouncySlow.ProcessBytes(input1M, 0, input1M.Length, output1M, 0);
 		[Benchmark] public void BouncyCastleFast1M() => bouncyFast.ProcessBytes(input1M, 0, input1M.Length, output1M, 0);
 	}

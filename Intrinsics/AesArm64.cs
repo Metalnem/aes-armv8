@@ -103,6 +103,150 @@ namespace Intrinsics
 			}
 		}
 
+		public void EncryptPipelined(byte[] input, byte[] output)
+		{
+			int position = 0;
+			int left = input.Length;
+
+			var key0 = Unsafe.ReadUnaligned<Vector128<byte>>(ref enc[0 * BlockSize]);
+			var key1 = Unsafe.ReadUnaligned<Vector128<byte>>(ref enc[1 * BlockSize]);
+			var key2 = Unsafe.ReadUnaligned<Vector128<byte>>(ref enc[2 * BlockSize]);
+			var key3 = Unsafe.ReadUnaligned<Vector128<byte>>(ref enc[3 * BlockSize]);
+			var key4 = Unsafe.ReadUnaligned<Vector128<byte>>(ref enc[4 * BlockSize]);
+			var key5 = Unsafe.ReadUnaligned<Vector128<byte>>(ref enc[5 * BlockSize]);
+			var key6 = Unsafe.ReadUnaligned<Vector128<byte>>(ref enc[6 * BlockSize]);
+			var key7 = Unsafe.ReadUnaligned<Vector128<byte>>(ref enc[7 * BlockSize]);
+			var key8 = Unsafe.ReadUnaligned<Vector128<byte>>(ref enc[8 * BlockSize]);
+			var key9 = Unsafe.ReadUnaligned<Vector128<byte>>(ref enc[9 * BlockSize]);
+			var key10 = Unsafe.ReadUnaligned<Vector128<byte>>(ref enc[10 * BlockSize]);
+
+			while (left >= 4 * BlockSize)
+			{
+				var block0 = Unsafe.ReadUnaligned<Vector128<byte>>(ref input[position + 0 * BlockSize]);
+				var block1 = Unsafe.ReadUnaligned<Vector128<byte>>(ref input[position + 1 * BlockSize]);
+				var block2 = Unsafe.ReadUnaligned<Vector128<byte>>(ref input[position + 2 * BlockSize]);
+				var block3 = Unsafe.ReadUnaligned<Vector128<byte>>(ref input[position + 3 * BlockSize]);
+
+				// Round 1
+				block0 = Aes.Encrypt(block0, key0);
+				block1 = Aes.Encrypt(block1, key0);
+				block2 = Aes.Encrypt(block2, key0);
+				block3 = Aes.Encrypt(block3, key0);
+
+				block0 = Aes.MixColumns(block0);
+				block1 = Aes.MixColumns(block1);
+				block2 = Aes.MixColumns(block2);
+				block3 = Aes.MixColumns(block3);
+
+				// Round 2
+				block0 = Aes.Encrypt(block0, key1);
+				block1 = Aes.Encrypt(block1, key1);
+				block2 = Aes.Encrypt(block2, key1);
+				block3 = Aes.Encrypt(block3, key1);
+
+				block0 = Aes.MixColumns(block0);
+				block1 = Aes.MixColumns(block1);
+				block2 = Aes.MixColumns(block2);
+				block3 = Aes.MixColumns(block3);
+
+				// Round 3
+				block0 = Aes.Encrypt(block0, key2);
+				block1 = Aes.Encrypt(block1, key2);
+				block2 = Aes.Encrypt(block2, key2);
+				block3 = Aes.Encrypt(block3, key2);
+
+				block0 = Aes.MixColumns(block0);
+				block1 = Aes.MixColumns(block1);
+				block2 = Aes.MixColumns(block2);
+				block3 = Aes.MixColumns(block3);
+
+				// Round 4
+				block0 = Aes.Encrypt(block0, key3);
+				block1 = Aes.Encrypt(block1, key3);
+				block2 = Aes.Encrypt(block2, key3);
+				block3 = Aes.Encrypt(block3, key3);
+
+				block0 = Aes.MixColumns(block0);
+				block1 = Aes.MixColumns(block1);
+				block2 = Aes.MixColumns(block2);
+				block3 = Aes.MixColumns(block3);
+
+				// Round 5
+				block0 = Aes.Encrypt(block0, key4);
+				block1 = Aes.Encrypt(block1, key4);
+				block2 = Aes.Encrypt(block2, key4);
+				block3 = Aes.Encrypt(block3, key4);
+
+				block0 = Aes.MixColumns(block0);
+				block1 = Aes.MixColumns(block1);
+				block2 = Aes.MixColumns(block2);
+				block3 = Aes.MixColumns(block3);
+
+				// Round 6
+				block0 = Aes.Encrypt(block0, key5);
+				block1 = Aes.Encrypt(block1, key5);
+				block2 = Aes.Encrypt(block2, key5);
+				block3 = Aes.Encrypt(block3, key5);
+
+				block0 = Aes.MixColumns(block0);
+				block1 = Aes.MixColumns(block1);
+				block2 = Aes.MixColumns(block2);
+				block3 = Aes.MixColumns(block3);
+
+				// Round 7
+				block0 = Aes.Encrypt(block0, key6);
+				block1 = Aes.Encrypt(block1, key6);
+				block2 = Aes.Encrypt(block2, key6);
+				block3 = Aes.Encrypt(block3, key6);
+
+				block0 = Aes.MixColumns(block0);
+				block1 = Aes.MixColumns(block1);
+				block2 = Aes.MixColumns(block2);
+				block3 = Aes.MixColumns(block3);
+
+				// Round 8
+				block0 = Aes.Encrypt(block0, key7);
+				block1 = Aes.Encrypt(block1, key7);
+				block2 = Aes.Encrypt(block2, key7);
+				block3 = Aes.Encrypt(block3, key7);
+
+				block0 = Aes.MixColumns(block0);
+				block1 = Aes.MixColumns(block1);
+				block2 = Aes.MixColumns(block2);
+				block3 = Aes.MixColumns(block3);
+
+				// Round 9
+				block0 = Aes.Encrypt(block0, key8);
+				block1 = Aes.Encrypt(block1, key8);
+				block2 = Aes.Encrypt(block2, key8);
+				block3 = Aes.Encrypt(block3, key8);
+
+				block0 = Aes.MixColumns(block0);
+				block1 = Aes.MixColumns(block1);
+				block2 = Aes.MixColumns(block2);
+				block3 = Aes.MixColumns(block3);
+
+				// Round 10
+				block0 = Aes.Encrypt(block0, key9);
+				block1 = Aes.Encrypt(block1, key9);
+				block2 = Aes.Encrypt(block2, key9);
+				block3 = Aes.Encrypt(block3, key9);
+
+				block0 = Simd.Xor(block0, key10);
+				block1 = Simd.Xor(block1, key10);
+				block2 = Simd.Xor(block2, key10);
+				block3 = Simd.Xor(block3, key10);
+
+				Unsafe.WriteUnaligned(ref output[position + 0 * BlockSize], block0);
+				Unsafe.WriteUnaligned(ref output[position + 1 * BlockSize], block1);
+				Unsafe.WriteUnaligned(ref output[position + 2 * BlockSize], block2);
+				Unsafe.WriteUnaligned(ref output[position + 3 * BlockSize], block3);
+
+				position += 4 * BlockSize;
+				left -= 4 * BlockSize;
+			}
+		}
+
 		public void Decrypt(byte[] input, byte[] output)
 		{
 			int position = 0;
