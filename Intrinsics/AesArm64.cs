@@ -269,34 +269,33 @@ namespace Intrinsics
 				var block = Unsafe.ReadUnaligned<Vector128<byte>>(ref input[position]);
 
 				block = Aes.Decrypt(block, key0);
-
 				block = Aes.InverseMixColumns(block);
+
 				block = Aes.Decrypt(block, key1);
-
 				block = Aes.InverseMixColumns(block);
+
 				block = Aes.Decrypt(block, key2);
-
 				block = Aes.InverseMixColumns(block);
+
 				block = Aes.Decrypt(block, key3);
-
 				block = Aes.InverseMixColumns(block);
+
 				block = Aes.Decrypt(block, key4);
-
 				block = Aes.InverseMixColumns(block);
+
 				block = Aes.Decrypt(block, key5);
-
 				block = Aes.InverseMixColumns(block);
+
 				block = Aes.Decrypt(block, key6);
-
 				block = Aes.InverseMixColumns(block);
+
 				block = Aes.Decrypt(block, key7);
-
 				block = Aes.InverseMixColumns(block);
+
 				block = Aes.Decrypt(block, key8);
-
 				block = Aes.InverseMixColumns(block);
-				block = Aes.Decrypt(block, key9);
 
+				block = Aes.Decrypt(block, key9);
 				block = Simd.Xor(block, key10);
 
 				Unsafe.WriteUnaligned(ref output[position], block);
